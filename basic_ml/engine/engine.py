@@ -55,7 +55,7 @@ def test_step(model: torch.nn.Module,
             test_loss += loss.item()
 
             test_pred_labels = test_pred_logits.argmax(dim=1)
-            test_acc += ((test_pred_logits == y).sum().item() / len(test_pred_labels))
+            test_acc += (test_pred_labels == y).sum().item() / len(test_pred_labels)
 
     test_loss = test_loss / len(dataloader)
     test_acc = test_acc / len(dataloader)
@@ -91,7 +91,7 @@ def train(model: torch.nn.Module,
                                         device=device)
 
         print(
-            f'Epoch: {epochs+1} | '
+            f'Epoch: {epoch + 1} | '
             f'train_loss: {train_loss:.4f} | '
             f'train_acc: {train_acc:.4f} | '
             f'test_loss: {test_loss:.4f} | '
