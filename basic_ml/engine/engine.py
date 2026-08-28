@@ -47,15 +47,15 @@ def test_step(model: torch.nn.Module,
     with torch.inference_mode():
         for batch, (X, y) in enumerate(dataloader):
 
-        X, y = X.to(device), y.to(device)
+            X, y = X.to(device), y.to(device)
 
-        test_pred_logits = model(X)
+            test_pred_logits = model(X)
 
-        loss = loss_fn(test_pred_logits, y)
-        test_loss += loss.item()
+            loss = loss_fn(test_pred_logits, y)
+            test_loss += loss.item()
 
-        test_pred_labels = test_pred_logits.argmax(dim=1)
-        test_acc += ((test_pred_logits == y).sum().item() / len(test_pred_labels))
+            test_pred_labels = test_pred_logits.argmax(dim=1)
+            test_acc += ((test_pred_logits == y).sum().item() / len(test_pred_labels))
 
     test_loss = test_loss / len(dataloader)
     test_acc = test_acc / len(dataloader)
