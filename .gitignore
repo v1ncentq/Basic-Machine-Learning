@@ -1,2 +1,7 @@
 .conda/
 .vscode/
+
+*.pyc
+*.pth
+*.pt
+*.DS_Store
