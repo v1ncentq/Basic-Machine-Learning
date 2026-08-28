@@ -9,3 +9,4 @@ matplotlib==3.11.1
 tqdm==4.70.0
 PyYAML==6.0.3
 numpy==2.5.2
+python-dotenv==1.2.3
