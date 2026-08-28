@@ -2,7 +2,7 @@ import os
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 
-NUMWORKERS = os.cpu_count()
+NUMWORKERS = 0
 
 def create_dataloaders(
         train_dir:str,
@@ -21,17 +21,15 @@ def create_dataloaders(
         dataset=train_data,
         batch_size=batch_size,
         shuffle=True,
-        num_workers=num_workers,
-        pin_memory=True
+        num_workers=num_workers
     )
 
     test_dataloader = DataLoader(
         dataset=test_data,
         batch_size=batch_size,
         shuffle=False,
-        num_workers=num_workers,
-        pin_memory=True
+        num_workers=num_workers
     )
 
-    return class_names, train_dataloader, test_dataloader
+    return train_dataloader, test_dataloader, class_names
     
