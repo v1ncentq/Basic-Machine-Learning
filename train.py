@@ -26,6 +26,8 @@ def main():
     train_dataset = str(os.getenv("IMAGES_TRAIN_DIR"))
     test_dataset = str(os.getenv("IMAGES_TEST_DIR"))
 
+    metrics = str(os.getenv("METRICS_DIR"))
+
     device = torch.device('mps')
 
     data_transform = transforms.Compose([
@@ -55,7 +57,8 @@ def main():
                 optimizer=optimizer,
                 loss_fn=loss_fn,
                 epochs=HYPERPARAMETERS["NUM_EPOCHS"],
-                device=device)
+                device=device,
+                metrics=metrics+ "efficientnet_b0.json")
 
     utils.save_model(model=model,
                     target_dir='basic_ml/models/runs/',
