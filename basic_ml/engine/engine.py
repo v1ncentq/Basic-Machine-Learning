@@ -1,6 +1,7 @@
 import torch, torchvision
 import matplotlib.pyplot as plt
 
+from torchvision import transforms
 from tqdm.auto import tqdm
 from typing import Dict, List, Tuple
 from PIL import Image
@@ -114,17 +115,23 @@ def predplot_image(model: torch.nn.Module,
                    class_names: List[str],
                    image_size: Tuple[int,int] = (224,224),
                    transform: torchvision.transforms = None,
-                   device: torch.device):
+                   device: torch.device = torch.device('mps')):
 
     img = Image.open(image_path)
 
     if transform is not None:
         image_transform = transform
+    else:
+        image_transform = transforms.Compose([
+            transforms.Resize(image_size),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                    std=[0.229, 0.224, 0.225]),])
 
     model.to(device)
 
     model.eval()
-    
+
     with torch.inference_mode():
         transformed_image = image_transform(img).unsqueeze(dim=0)
         target_image_pred = model(transformed_image.to(device))
@@ -135,4 +142,6 @@ def predplot_image(model: torch.nn.Module,
     plt.figure()
     plt.imshow(img)
     plt.title(f"Pred: {class_names[target_image_pred_label]} | Prob: {target_image_pred_probs.max():.3f}")
-    plt.axis(False);
+    plt.axis(False)
+    
+    plt.show()
