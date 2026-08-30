@@ -1,7 +1,9 @@
-import torch
+import torch, torchvision
+import matplotlib.pyplot as plt
 
 from tqdm.auto import tqdm
 from typing import Dict, List, Tuple
+from PIL import Image
 
 def train_step(model:torch.nn.Module,
         dataloader:torch.utils.data.DataLoader,
@@ -104,3 +106,33 @@ def train(model: torch.nn.Module,
         results['test_acc'].append(test_acc)
 
     return results
+
+
+
+def predplot_image(model: torch.nn.Module,
+                   image_path: str,
+                   class_names: List[str],
+                   image_size: Tuple[int,int] = (224,224),
+                   transform: torchvision.transforms = None,
+                   device: torch.device):
+
+    img = Image.open(image_path)
+
+    if transform is not None:
+        image_transform = transform
+
+    model.to(device)
+
+    model.eval()
+    
+    with torch.inference_mode():
+        transformed_image = image_transform(img).unsqueeze(dim=0)
+        target_image_pred = model(transformed_image.to(device))
+
+    target_image_pred_probs = torch.softmax(target_image_pred, dim=1)
+    target_image_pred_label = torch.argmax(target_image_pred_probs, dim=1)
+
+    plt.figure()
+    plt.imshow(img)
+    plt.title(f"Pred: {class_names[target_image_pred_label]} | Prob: {target_image_pred_probs.max():.3f}")
+    plt.axis(False);
