@@ -55,7 +55,7 @@ def main():
                 device=device)
 
     utils.save_model(model=model,
-                    target_dir='basic_ml/models/',
+                    target_dir='basic_ml/models/runs/',
                     model_name='tinyvgg.pth')
 
 if __name__ == "__main__":
