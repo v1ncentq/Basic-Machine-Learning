@@ -61,7 +61,7 @@ def main():
                 metrics=metrics+ "efficientnet_b0.json")
 
     utils.save_model(model=model,
-                    target_dir='basic_ml/models/runs/',
+                    target_dir=metrics,
                     model_name='efficientnet_b0.pth')
 
 if __name__ == "__main__":
