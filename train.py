@@ -11,7 +11,7 @@ from basic_ml.models import model_tinyvgg, model_efficientnet_b0
 from basic_ml.utils import utils
 
 HYPERPARAMETERS = {
-    "NUM_EPOCHS": 10,
+    "NUM_EPOCHS": 20,
     "BATCH_SIZE": 32,
     "HIDDEN_UNITS": 10,
     "LEARNING_RATE" : 0.001,}
@@ -63,6 +63,8 @@ def main():
     utils.save_model(model=model,
                     target_dir=metrics,
                     model_name='efficientnet_b0.pth')
+
+    utils.metrics_plot(metrics_path=metrics+ "efficientnet_b0.json")
 
 if __name__ == "__main__":
     main()
