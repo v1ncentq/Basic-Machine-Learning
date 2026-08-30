@@ -1,9 +1,11 @@
 import torch, torchvision
 import matplotlib.pyplot as plt
+import json
 
+from pathlib import Path
 from torchvision import transforms
 from tqdm.auto import tqdm
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 from PIL import Image
 
 def train_step(model:torch.nn.Module,
@@ -71,7 +73,8 @@ def train(model: torch.nn.Module,
           optimizer: torch.optim.Optimizer,
           loss_fn: torch.nn.Module,
           epochs: int,
-          device: torch.device) -> Dict[str, List]:
+          device: torch.device,
+          metrics: Optional[str] = None) -> Dict[str, List]:
 
     results = {"train_loss": [],
                "train_acc": [],
@@ -105,6 +108,10 @@ def train(model: torch.nn.Module,
         results['train_acc'].append(train_acc)
         results['test_loss'].append(test_loss)
         results['test_acc'].append(test_acc)
+
+        if metrics is not None:
+            with open(metrics, "w", encoding="utf-8") as f:
+                json.dump(results,f,indent=4)
 
     return results
 
@@ -143,5 +150,5 @@ def predplot_image(model: torch.nn.Module,
     plt.imshow(img)
     plt.title(f"Pred: {class_names[target_image_pred_label]} | Prob: {target_image_pred_probs.max():.3f}")
     plt.axis(False)
-    
+
     plt.show()
